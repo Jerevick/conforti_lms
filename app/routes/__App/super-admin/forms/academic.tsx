@@ -21,7 +21,7 @@ import {
 import { ActionFunction, redirect } from "@remix-run/node";
 import { prisma } from "~/db.server";
 import { LoaderFunction, MetaFunction } from "@remix-run/server-runtime";
-import academic from "~/routes/super-admin/forms/academic";
+import academic from "~/routes/__App/super-admin/forms/academic";
 export const meta: MetaFunction = () => {
   return {
     title: "Academic Year",

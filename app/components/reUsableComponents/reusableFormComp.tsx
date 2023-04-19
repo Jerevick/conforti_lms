@@ -110,10 +110,11 @@ type Button = {
   style: string;
   type: "submit" | "reset" | "button";
   value: string[];
+  disable:boolean
 };
 export const Button = (inputs: Button) => {
   return (
-    <button className={inputs.style} type={inputs.type}>
+    <button className={inputs.style} type={inputs.type} disabled={inputs.disable}>
       {!inputs.transition ? inputs.value[0] : inputs.value[1]}
     </button>
   );

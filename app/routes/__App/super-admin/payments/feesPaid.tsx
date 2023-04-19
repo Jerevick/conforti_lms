@@ -8,7 +8,7 @@ import {
   useSearchParams,
   useTransition,
 } from "@remix-run/react";
-import { LoaderFunction, MetaFunction } from "@remix-run/server-runtime";
+import { json, LoaderFunction, MetaFunction } from "@remix-run/server-runtime";
 import dayjs from "dayjs";
 import { type } from "os";
 import { useState } from "react";
@@ -94,7 +94,9 @@ export default function () {
   const loaderData = useLoaderData();
   const { submission } = useTransition();
   const setLevelId = levelId((state) => state.getLevelId);
-
+  const levId = levelId((state) => state.levelId);
+const [ids, setIds]= useState({levelId:"", acadYrId:levId});
+console.log(levId)
   const returnedData = loaderData[0]
     ? loaderData[0].map((item: PayItem, index: number) => {
         const {
@@ -131,6 +133,7 @@ export default function () {
 
   return (
     <div className="mx-5">
+      { loaderData?.errorMessage && <p>{ loaderData.errorMessage }</p>}
       <Form className="flex w-full my-5 space-x-4" method="get">
         <label htmlFor="levelId" className="w-fit">
           <span className="font-bold">Select Level: </span>
@@ -158,6 +161,7 @@ export default function () {
             name="acadYrId"
             id=""
             className="w-fit rounded border-2 bg-gray-200 py-2.5 px-2 outline outline-1"
+          onChange={e=>setIds({...ids, levelId: e.target.value})}
           >
             <option value="" selected>
               --Select Academic Year--
@@ -171,6 +175,7 @@ export default function () {
         </label>
 
         <Button
+          disable={!ids.levelId.length&&!ids.acadYrId.length}
           value={["Search", "Searching"]}
           transition={!!submission}
           type="submit"

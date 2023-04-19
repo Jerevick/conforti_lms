@@ -5,7 +5,7 @@ datasource db {
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["filteredRelationCount", "fullTextSearch", "interactiveTransactions"]
+  previewFeatures = ["filteredRelationCount", "fullTextSearch"]
 }
 
 model User {

@@ -60,6 +60,10 @@ const validatePassword = withZod(
 export const action: ActionFunction = async ({ request }) => {
   const userId = (await requireUserId(request)) as User["id"];
   const formData = await request.formData();
+const jsonData =Object.fromEntries(formData)
+console.log('====================================');
+console.log(jsonData);
+console.log('====================================');
   invariant(userId, "User ID is missing");
   const changePassword = formData.get("changePassword");
 
@@ -187,9 +191,7 @@ export default function Profile() {
     gender,
     nationality,
   });
-  console.log("====================================");
-  console.log(firstname);
-  console.log("====================================");
+
   const passwordError = useActionData();
   return (
     <div className={"mt-"}>
@@ -197,9 +199,9 @@ export default function Profile() {
         <button onClick={changeProfFxn}>Edit Profile</button>
         <button onClick={changePswdFxn}>Change Password</button>{" "}
       </div>
-      <ValidatedForm
-        reloadDocument
-        validator={validator}
+      <Form
+        // reloadDocument
+        // validator={validator}
         method={"post"}
         className={
           "flex sm:justify-items-start sm:flex-col flex-wrap space-y-4"
@@ -299,6 +301,7 @@ export default function Profile() {
             name="nationality"
             id="nationality"
             label={"Nationality"}
+
             option={countries}
           />
 
@@ -351,7 +354,7 @@ export default function Profile() {
           type={"submit"}
           value={["Save", "saving"]}
         />
-      </ValidatedForm>
+      </Form>
     </div>
   );
 }

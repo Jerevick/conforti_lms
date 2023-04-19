@@ -20,63 +20,63 @@ export const loader: LoaderFunction = async () => {
     where: {
       role: "PUPIL",
       NOT: { profile: null },
-      level: { some: { isPromoted: false, level: { name: "CLASS_1" } } },
+      level: { some: { isPromoted: false, level: { levelName: "CLASS_1" } } },
     },
   });
   const pupil_cls2 = await prisma.user.count({
     where: {
       role: "PUPIL",
       NOT: { profile: null },
-      level: { some: { isPromoted: false, level: { name: "CLASS_2" } } },
+      level: { some: { isPromoted: false, level: { levelName: "CLASS_2" } } },
     },
   });
   const pupil_cls3 = await prisma.user.count({
     where: {
       role: "PUPIL",
       NOT: { profile: null },
-      level: { some: { isPromoted: false, level: { name: "CLASS_3" } } },
+      level: { some: { isPromoted: false, level: { levelName: "CLASS_3" } } },
     },
   });
   const pupil_cls4 = await prisma.user.count({
     where: {
       role: "PUPIL",
       NOT: { profile: null },
-      level: { some: { isPromoted: false, level: { name: "CLASS_4" } } },
+      level: { some: { isPromoted: false, level: { levelName: "CLASS_4" } } },
     },
   });
   const pupil_cls5 = await prisma.user.count({
     where: {
       role: "PUPIL",
       NOT: { profile: null },
-      level: { some: { isPromoted: false, level: { name: "CLASS_5" } } },
+      level: { some: { isPromoted: false, level: { levelName: "CLASS_5" } } },
     },
   });
   const pupil_cls6 = await prisma.user.count({
     where: {
       role: "PUPIL",
       NOT: { profile: null },
-      level: { some: { isPromoted: false, level: { name: "CLASS_6" } } },
+      level: { some: { isPromoted: false, level: { levelName: "CLASS_6" } } },
     },
   });
   const NURSERY_1 = await prisma.user.count({
     where: {
       role: "PUPIL",
       NOT: { profile: null },
-      level: { some: { isPromoted: false, level: { name: "NURSERY_1" } } },
+      level: { some: { isPromoted: false, level: { levelName: "NURSERY_1" } } },
     },
   });
   const nursery_2 = await prisma.user.count({
     where: {
       role: "PUPIL",
       NOT: { profile: null },
-      level: { some: { isPromoted: false, level: { name: "NURSERY_2" } } },
+      level: { some: { isPromoted: false, level: { levelName: "NURSERY_2" } } },
     },
   });
   const nursery_3 = await prisma.user.count({
     where: {
       role: "PUPIL",
       NOT: { profile: null },
-      level: { some: { isPromoted: false, level: { name: "NURSERY_3" } } },
+      level: { some: { isPromoted: false, level: { levelName: "NURSERY_3" } } },
     },
   });
   return [
@@ -168,15 +168,14 @@ export default function SuperAdmin() {
   );
 }
 
-export function ErrorBoundary({ error }: { error: Error }) {
-  console.error(error);
+// export function ErrorBoundary({ error }: { error: Error }) {
 
-  return (
-    <div className={"text-red-600"}>
-      {"This User Has not updated his/her status"}
-    </div>
-  );
-}
+//   return (
+//     <div className={"text-red-600"}>
+//       {"This User Has not updated his/her status"}
+//     </div>
+//   );
+// }
 
 export function CatchBoundary() {
   const caught = useCatch();

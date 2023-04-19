@@ -56,7 +56,7 @@ export default function App() {
       <body className="h-full ">
        <div className="mb-12"><NavBar /></div>
         <Outlet />
-        <Footer />
+        {/* <Footer /> */}
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

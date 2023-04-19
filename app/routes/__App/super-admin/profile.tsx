@@ -63,7 +63,7 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(userId, "User ID is missing");
   const changePassword = formData.get("changePassword");
 
-  const dob = new Date(formData.get("dob")),
+  const dob = new Date(formData.get("dob")) ,
     pob = formData.get("pob") as ProfileProps["pob"],
     address = formData.get("address") as ProfileProps["address"],
     phone = formData.get("phone") as ProfileProps["phone"],
@@ -75,6 +75,7 @@ export const action: ActionFunction = async ({ request }) => {
     lastname = formData.get("lname") as string,
     repeat_password = formData.get("repeat_password"),
     password = formData.get("password") as string;
+
   if (password !== repeat_password) {
     return json(
       { errors: { password: "passwords do not match" } },
@@ -187,7 +188,6 @@ export default function Profile() {
     gender,
     nationality,
   });
-
   const passwordError = useActionData();
   return (
     <div className={"mt-"}>
@@ -195,9 +195,9 @@ export default function Profile() {
         <button onClick={changeProfFxn}>Edit Profile</button>
         <button onClick={changePswdFxn}>Change Password</button>{" "}
       </div>
-      <ValidatedForm
+      <Form
         reloadDocument
-        validator={validator}
+        // validator={validator}
         method={"post"}
         className={
           "flex sm:justify-items-start sm:flex-col flex-wrap space-y-4"
@@ -297,7 +297,6 @@ export default function Profile() {
             name="nationality"
             id="nationality"
             label={"Nationality"}
-
             option={countries}
           />
 
@@ -350,7 +349,7 @@ export default function Profile() {
           type={"submit"}
           value={["Save", "saving"]}
         />
-      </ValidatedForm>
+      </Form>
     </div>
   );
 }
