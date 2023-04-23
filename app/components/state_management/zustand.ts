@@ -11,6 +11,6 @@ export const levelId = create<Id>()(
       levelId: "",
       getLevelId: (id) => set((state) => ({ levelId: id })),
     }),
-    { name: "levelId", getStorage: () => sessionStorage }
+    { name: "levelId", getStorage: () => sessionStorage }   
   )
 );
