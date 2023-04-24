@@ -3,14 +3,15 @@ import {
   Link,
   useCatch,
   useLoaderData,
-  useLocation,
-  useParams,
-  useSearchParams,
+  // useLocation,
+  // useParams,
+  // useSearchParams,
   useTransition,
 } from "@remix-run/react";
-import { json, LoaderFunction, MetaFunction } from "@remix-run/server-runtime";
-import dayjs from "dayjs";
-import { type } from "os";
+import type { LoaderFunction, MetaFunction } from "@remix-run/server-runtime";
+// import { log } from "console";
+// import dayjs from "dayjs";
+// import { type } from "os";
 import { useState } from "react";
 import { Table } from "react-bootstrap";
 import invariant from "tiny-invariant";
@@ -20,7 +21,7 @@ import {
   buttonStyle,
   tableCap,
   tableHeadStyle,
-  tableStyle,
+  // tableStyle,
   tableThStyle,
   tableTrStyle,
   td,
@@ -37,7 +38,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url).searchParams;
   let levelId = url.get("levelId") as string;
   let academic_year_id = url.get("acadYrId") as string;
-  invariant(userId);
+  invariant('There is no user ID'+userId);
   const acadYr1 = await prisma.academicYear.findMany({
     where: { isCurrent: true },
   });
@@ -87,15 +88,18 @@ export type PayItem = {
 
   level: [{ feesBalance: number }];
 };
-type CurrentValue = {
-  amount: number;
-};
+
+// type CurrentValue = {
+//   amount: number;
+// };
+
 export default function () {
   const loaderData = useLoaderData();
   const { submission } = useTransition();
   const setLevelId = levelId((state) => state.getLevelId);
   const levId = levelId((state) => state.levelId);
 const [ids, setIds]= useState({levelId:"", acadYrId:levId});
+
 console.log(levId)
   const returnedData = loaderData[0]
     ? loaderData[0].map((item: PayItem, index: number) => {
@@ -107,9 +111,14 @@ console.log(levId)
           level: [{ feesBalance }],
         } = item;
         const feesPaid = payment.reduce((accumulator: number, currentValue) => {
-          return accumulator + currentValue.amount;
+console.log('====================================');
+console.log(currentValue);
+console.log('====================================');
+          return accumulator +  amount;
         }, 0);
-
+console.log('====================================');
+console.log('total fees paid ='+ feesPaid);
+console.log('====================================');
         return (
           <tr key={index} className="divide-x-8 divide-y-8">
             <td className={td}>{index + 1}</td>
