@@ -92,6 +92,10 @@ export default function () {
           <tbody>
             { data.map((item: string | any, index: number) => {
               const isCurrent = item?.isCurrent?"Current":"Past";
+const disabled = isCurrent==="Past"?true: false
+console.log('====================================');
+console.log(disabled);
+console.log('====================================');
               return<tr className={ index % 2 ? modulo : noModulo } key={ index }>
                 <td className={ td }>{ index + 1 }</td>
                 <td className={ td }>{ item?.academic_year }</td>
@@ -103,7 +107,9 @@ export default function () {
                     </Link>
                   </span>
                   <span className={ "hover:bg-amber-200 hover:px-2" }>
-                    <Link to={ `level/${item.id}` }>assign level</Link>
+                   <button disabled={disabled}>
+                   <Link to={ `level/${item.id}` } >assign level</Link>
+                   </button>
                   </span>
                 </td>
               </tr>

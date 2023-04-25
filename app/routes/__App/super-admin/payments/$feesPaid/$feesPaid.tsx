@@ -19,6 +19,7 @@ export const meta: MetaFunction = () => {
 };
 export const loader: LoaderFunction = async ({ request, params }) => {
   const userId = params.feesPaid;
+ console.log(userId)
   const user = await prisma.profile.findUnique({ where: { userId } });
 
   const sumAmount = await prisma.paymentDetail.aggregate({

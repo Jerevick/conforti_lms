@@ -59,7 +59,7 @@ model Level {
 model AcademicYear {
   id            String          @id @default(cuid())
   academic_year String          @unique
-  isCurrent     Boolean         @default(true)
+  isCurrent     Boolean         @default(false)
   level         Level[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt

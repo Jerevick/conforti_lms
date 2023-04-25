@@ -45,7 +45,7 @@ CREATE TABLE "Level" (
 CREATE TABLE "AcademicYear" (
     "id" TEXT NOT NULL,
     "academic_year" TEXT NOT NULL,
-    "isCurrent" BOOLEAN NOT NULL DEFAULT true,
+    "isCurrent" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

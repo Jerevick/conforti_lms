@@ -9,6 +9,7 @@ import {
   useTransition,
 } from "@remix-run/react";
 import type { LoaderFunction, MetaFunction } from "@remix-run/server-runtime";
+import { log } from "console";
 // import { log } from "console";
 // import dayjs from "dayjs";
 // import { type } from "os";
@@ -35,10 +36,10 @@ export const meta: MetaFunction = () => {
 };
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await requireUserId(request);
+  invariant('There is no user ID'+userId);
   const url = new URL(request.url).searchParams;
   let levelId = url.get("levelId") as string;
   let academic_year_id = url.get("acadYrId") as string;
-  invariant('There is no user ID'+userId);
   const acadYr1 = await prisma.academicYear.findMany({
     where: { isCurrent: true },
   });
@@ -50,6 +51,13 @@ export const loader: LoaderFunction = async ({ request }) => {
     },
   });
 
+//to create notification if there is no level or academic id
+if(levelId && !academic_year_id || !levelId && academic_year_id){
+console.log('====================================');
+console.log("Please provide academic year ID");
+console.log('====================================');
+return null
+}
   levelId = levelId ? levelId : levId[0].id;
   academic_year_id = academic_year_id ? academic_year_id : acadYr1[0].id;
 
@@ -68,7 +76,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const level = await prisma.level.findMany({
     orderBy: { levelName: "asc" },
   });
-  const acadYr = await prisma.academicYear.findMany({});
+  const acadYr = await prisma.academicYear.findMany({orderBy:{academic_year:"asc"}});
   return [users, level, acadYr];
 };
 export type PayItem = {
@@ -101,6 +109,7 @@ export default function () {
 const [ids, setIds]= useState({levelId:"", acadYrId:levId});
 
 console.log(levId)
+
   const returnedData = loaderData[0]
     ? loaderData[0].map((item: PayItem, index: number) => {
         const {
@@ -111,14 +120,9 @@ console.log(levId)
           level: [{ feesBalance }],
         } = item;
         const feesPaid = payment.reduce((accumulator: number, currentValue) => {
-console.log('====================================');
-console.log(currentValue);
-console.log('====================================');
-          return accumulator +  amount;
+          return accumulator +  currentValue.amount;
         }, 0);
-console.log('====================================');
-console.log('total fees paid ='+ feesPaid);
-console.log('====================================');
+
         return (
           <tr key={index} className="divide-x-8 divide-y-8">
             <td className={td}>{index + 1}</td>
