@@ -36,7 +36,7 @@ export const meta: MetaFunction = () => {
 };
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await requireUserId(request);
-  invariant('There is no user ID'+userId);
+  invariant('There is no user ID' + userId);
   const url = new URL(request.url).searchParams;
   let levelId = url.get("levelId") as string;
   let academic_year_id = url.get("acadYrId") as string;
@@ -51,13 +51,13 @@ export const loader: LoaderFunction = async ({ request }) => {
     },
   });
 
-//to create notification if there is no level or academic id
-if(levelId && !academic_year_id || !levelId && academic_year_id){
-console.log('====================================');
-console.log("Please provide academic year ID");
-console.log('====================================');
-return null
-}
+  //to create notification if there is no level or academic id
+  if (levelId && !academic_year_id || !levelId && academic_year_id) {
+    console.log('====================================');
+    console.log("Please provide academic year ID");
+    console.log('====================================');
+    return null
+  }
   levelId = levelId ? levelId : levId[0].id;
   academic_year_id = academic_year_id ? academic_year_id : acadYr1[0].id;
 
@@ -76,7 +76,7 @@ return null
   const level = await prisma.level.findMany({
     orderBy: { levelName: "asc" },
   });
-  const acadYr = await prisma.academicYear.findMany({orderBy:{academic_year:"asc"}});
+  const acadYr = await prisma.academicYear.findMany({ orderBy: { academic_year: "asc" } });
   return [users, level, acadYr];
 };
 export type PayItem = {
@@ -106,47 +106,50 @@ export default function () {
   const { submission } = useTransition();
   const setLevelId = levelId((state) => state.getLevelId);
   const levId = levelId((state) => state.levelId);
-const [ids, setIds]= useState({levelId:"", acadYrId:levId});
+  const [ids, setIds] = useState({ levelId: "", acadYrId: levId });
 
-console.log(levId)
+  console.log('loaderdata = '+loaderData)
 
   const returnedData = loaderData[0]
     ? loaderData[0].map((item: PayItem, index: number) => {
-        const {
-          amount,
-          payment,
-          profile: { firstname, other_name, lastname },
-          id,
-          level: [{ feesBalance }],
-        } = item;
-        const feesPaid = payment.reduce((accumulator: number, currentValue) => {
-          return accumulator +  currentValue.amount;
-        }, 0);
+      const {
+        amount,
+        payment,
+        profile: { firstname, other_name, lastname },
+        id,
+        level: [{ feesBalance }],
+      } = item;
+      const feesPaid = payment.reduce((accumulator: number, currentValue:any) => {
+console.log('====================================');
+console.log('current value = '+currentValue.amount);
+console.log('====================================');
+        return accumulator + currentValue.amount;
+      }, 0);
 
-        return (
-          <tr key={index} className="divide-x-8 divide-y-8">
-            <td className={td}>{index + 1}</td>
-            <td className={td}>
-              <span>{firstname} </span> <span>{other_name}</span>{" "}
-              <span>{lastname}</span>
-            </td>
-            <td className={td + " text-right"}>{feesPaid.toLocaleString()}</td>
-            <td className={td + " text-right"}>
-              {feesBalance.toLocaleString()}
-            </td>
-            <td className={td}>
-              <Link prefetch="intent" to={id}>
-                View
-              </Link>
-            </td>
-          </tr>
-        );
-      })
+      return (
+        <tr key={ index } className="divide-x-8 divide-y-8">
+          <td className={ td }>{ index + 1 }</td>
+          <td className={ td }>
+            <span>{ firstname } </span> <span>{ other_name }</span>{ " " }
+            <span>{ lastname }</span>
+          </td>
+          <td className={ td + " text-right" }>{ feesPaid.toLocaleString() }</td>
+          <td className={ td + " text-right" }>
+            { feesBalance.toLocaleString() }
+          </td>
+          <td className={ td }>
+            <Link prefetch="intent" to={ id }>
+              View
+            </Link>
+          </td>
+        </tr>
+      );
+    })
     : "";
 
   return (
     <div className="mx-5">
-      { loaderData?.errorMessage && <p>{ loaderData.errorMessage }</p>}
+      { loaderData?.errorMessage && <p>{ loaderData.errorMessage }</p> }
       <Form className="flex w-full my-5 space-x-4" method="get">
         <label htmlFor="levelId" className="w-fit">
           <span className="font-bold">Select Level: </span>
@@ -155,16 +158,16 @@ console.log(levId)
             name="levelId"
             id=""
             className="w-fit rounded border-2 bg-gray-200 py-2.5 px-2 outline outline-1"
-            onChange={(e) => setLevelId(e.target.value)}
+            onChange={ (e) => setLevelId(e.target.value) }
           >
             <option value="" selected>
               --Select level--
             </option>
-            {loaderData[1].map((item: PayItem, index: number) => (
-              <option key={index} value={item.id}>
-                {item.levelName}
+            { loaderData[1].map((item: PayItem, index: number) => (
+              <option key={ index } value={ item.id }>
+                { item.levelName }
               </option>
-            ))}
+            )) }
           </select>
         </label>
         <label htmlFor="levelId">
@@ -174,39 +177,39 @@ console.log(levId)
             name="acadYrId"
             id=""
             className="w-fit rounded border-2 bg-gray-200 py-2.5 px-2 outline outline-1"
-          onChange={e=>setIds({...ids, levelId: e.target.value})}
+            onChange={ e => setIds({ ...ids, levelId: e.target.value }) }
           >
             <option value="" selected>
               --Select Academic Year--
             </option>
-            {loaderData[2].map((item: PayItem, index: number) => (
-              <option key={index} value={item.id}>
-                {item.academic_year}
+            { loaderData[2].map((item: PayItem, index: number) => (
+              <option key={ index } value={ item.id }>
+                { item.academic_year }
               </option>
-            ))}
+            )) }
           </select>
         </label>
-
-        <Button
-          disable={!ids.levelId.length&&!ids.acadYrId.length}
-          value={["Search", "Searching"]}
-          transition={!!submission}
+<button>Search</button>
+        {/* <Button
+          disable={ !ids.levelId.length && !ids.acadYrId.length }
+          value={ ["Search", "Searching"] }
+          transition={ !!submission }
           type="submit"
-          style={buttonStyle + " self-end"}
-        />
+          style={ buttonStyle + " self-end" }
+        /> */}
       </Form>
       <Table striped bordered hover className="caption-top">
-        <caption className={tableCap}>Payments</caption>
-        <thead className={tableHeadStyle}>
-          <tr className={tableTrStyle}>
-            <th className={tableThStyle + " border-1"}>No.</th>
-            <th className={tableThStyle + " border-1"}>Name</th>
-            <th className={tableThStyle + " border-1"}>Total Payment (SLe)</th>
-            <th className={tableThStyle + " border-1"}>Fees Balance (SLe)</th>
-            <th className={tableThStyle + " border-1"}>View</th>
+        <caption className={ tableCap }>Payments</caption>
+        <thead className={ tableHeadStyle }>
+          <tr className={ tableTrStyle }>
+            <th className={ tableThStyle + " border-1" }>No.</th>
+            <th className={ tableThStyle + " border-1" }>Name</th>
+            <th className={ tableThStyle + " border-1" }>Total Payment (SLe)</th>
+            <th className={ tableThStyle + " border-1" }>Fees Balance (SLe)</th>
+            <th className={ tableThStyle + " border-1" }>View</th>
           </tr>
         </thead>
-        <tbody>{returnedData}</tbody>
+        <tbody>{ returnedData }</tbody>
       </Table>
     </div>
   );
@@ -215,7 +218,7 @@ console.log(levId)
 export function ErrorBoundary({ error }: { error: Error }) {
   console.error(error);
 
-  return <div className={"text-red-600"}>{error.message}</div>;
+  return <div className={ "text-red-600" }>{ error.message }</div>;
 }
 
 export function CatchBoundary() {
