@@ -7,7 +7,7 @@
     "build:css": "npm run generate:css -- --minify",
     "build:remix": "remix build",
     "build:server": "esbuild --platform=node --format=cjs ./server.ts --outdir=build --bundle",
-    "dev": "run-p dev:*",
+    "dev": "remix build && run-p dev:*",
     "dev:build": "cross-env NODE_ENV=development npm run build:server -- --watch",
     "dev:css": "cross-env NODE_ENV=development npm run generate:css -- --watch",
     "dev:remix": "cross-env NODE_ENV=development remix watch",
@@ -68,7 +68,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.5.0",
-    "@remix-run/dev": "^1.7.2",
+    "@remix-run/dev": "^1.6.8",
     "@remix-run/eslint-config": "^1.7.2",
     "@testing-library/cypress": "^8.0.3",
     "@testing-library/dom": "^8.18.1",
